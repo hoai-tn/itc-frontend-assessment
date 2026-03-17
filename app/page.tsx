@@ -1,19 +1,30 @@
-import { Button } from "@/components/ui/button"
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query"
+import { getPokemonList, getTypeList } from "@/services/api"
+import { PokemonPage } from "@/components/pokemon-page"
 
-export default function Page() {
+export default async function Page() {
+  const queryClient = new QueryClient()
+
+  await Promise.all([
+    queryClient.prefetchInfiniteQuery({
+      queryKey: ["pokemon-list"],
+      queryFn: ({ pageParam }) =>
+        getPokemonList({ limit: 20, offset: pageParam as number }),
+      initialPageParam: 0,
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ["type-list"],
+      queryFn: getTypeList,
+    }),
+  ])
+
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
-      </div>
-    </div>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <PokemonPage />
+    </HydrationBoundary>
   )
 }
