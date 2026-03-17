@@ -17,20 +17,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { usePokemonParams } from "@/hooks/use-pokemon-params"
 import { useTypeList } from "@/hooks/use-pokemon-types"
 
 const EXCLUDED_TYPES = ["unknown", "shadow"]
 
-interface PokemonTypeFilterProps {
-  selected: string[]
-  onChange: (types: string[]) => void
-}
-
-export function PokemonTypeFilter({
-  selected,
-  onChange,
-}: PokemonTypeFilterProps) {
+export function PokemonTypeFilter() {
   const [open, setOpen] = useState(false)
+  const { types: selected, setTypes } = usePokemonParams()
   const { data } = useTypeList()
 
   const types =
@@ -38,9 +32,9 @@ export function PokemonTypeFilter({
 
   function toggle(type: string) {
     if (selected.includes(type)) {
-      onChange(selected.filter((t) => t !== type))
+      setTypes(selected.filter((t) => t !== type))
     } else {
-      onChange([...selected, type])
+      setTypes([...selected, type])
     }
   }
 
@@ -91,7 +85,7 @@ export function PokemonTypeFilter({
             </Badge>
           ))}
           <button
-            onClick={() => onChange([])}
+            onClick={() => setTypes([])}
             className="text-xs text-muted-foreground hover:text-foreground"
           >
             Clear all

@@ -4,7 +4,7 @@ export function PokeballSpinner({ className }: { className?: string }) {
   return (
     <div className={cn("flex items-center justify-center", className)}>
       <svg
-        className="size-30 animate-spin"
+        className="size-25 animate-spin"
         viewBox="0 0 100 100"
         xmlns="http://www.w3.org/2000/svg"
       >
