@@ -1,4 +1,5 @@
 "use client"
+import * as React from "react"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import { DEFAULT_LIMIT } from "@/hooks/use-pokemon-list"
 
@@ -11,16 +12,18 @@ export function usePokemonParams() {
   const page = Number(searchParams.get("page")) || 1
   const limit = Number(searchParams.get("limit")) || DEFAULT_LIMIT
   const offset = (page - 1) * limit
+  const search = searchParams.get("search") || ""
 
   function updateParams(updates: Record<string, string | null>) {
     const params = new URLSearchParams(searchParams.toString())
-    // Update or remove parameters based on the provided updates
     for (const [key, value] of Object.entries(updates)) {
       if (value === null) params.delete(key)
       else params.set(key, value)
     }
     const qs = params.toString()
-    router.replace(`${pathname}${qs ? `?${qs}` : ""}`)
+    React.startTransition(() => {
+      router.replace(`${pathname}${qs ? `?${qs}` : ""}`)
+    })
   }
 
   function setTypes(newTypes: string[]) {
@@ -36,5 +39,12 @@ export function usePokemonParams() {
     })
   }
 
-  return { types, page, limit, offset, setTypes, setPage }
+  function setSearch(value: string) {
+    updateParams({
+      search: value || null,
+      page: null,
+    })
+  }
+
+  return { types, page, limit, offset, search, setTypes, setPage, setSearch }
 }

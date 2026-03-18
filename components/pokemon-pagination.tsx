@@ -2,11 +2,14 @@
 
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { usePokemonParams } from "@/hooks/use-pokemon-params"
 
-export function PokemonPagination({ totalPages }: { totalPages: number }) {
-  const { page, setPage } = usePokemonParams()
+interface PokemonPaginationProps {
+  totalPages: number
+  page: number
+  onPageChange: (page: number) => void
+}
 
+export function PokemonPagination({ totalPages, page, onPageChange }: PokemonPaginationProps) {
   if (totalPages <= 1) return null
 
   return (
@@ -15,7 +18,7 @@ export function PokemonPagination({ totalPages }: { totalPages: number }) {
         variant="outline"
         size="icon"
         disabled={page <= 1}
-        onClick={() => setPage(page - 1)}
+        onClick={() => onPageChange(page - 1)}
       >
         <ChevronLeftIcon />
       </Button>
@@ -26,7 +29,7 @@ export function PokemonPagination({ totalPages }: { totalPages: number }) {
         variant="outline"
         size="icon"
         disabled={page >= totalPages}
-        onClick={() => setPage(page + 1)}
+        onClick={() => onPageChange(page + 1)}
       >
         <ChevronRightIcon />
       </Button>

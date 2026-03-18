@@ -1,97 +1,95 @@
 "use client"
 
-import { useState } from "react"
-import { XIcon } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Fragment, useCallback, useEffect, useState } from "react"
+import { useDebouncedCallback } from "use-debounce"
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { usePokemonParams } from "@/hooks/use-pokemon-params"
+  Combobox,
+  ComboboxChip,
+  ComboboxChips,
+  ComboboxChipsInput,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxValue,
+  useComboboxAnchor,
+} from "@/components/ui/combobox"
 import { useTypeList } from "@/hooks/use-pokemon-types"
 
 const EXCLUDED_TYPES = ["unknown", "shadow"]
 
-export function PokemonTypeFilter() {
-  const [open, setOpen] = useState(false)
-  const { types: selected, setTypes } = usePokemonParams()
+interface PokemonTypeFilterProps {
+  selected: string[]
+  onSelectedChange: (types: string[]) => void
+}
+
+export function PokemonTypeFilter({
+  selected,
+  onSelectedChange,
+}: PokemonTypeFilterProps) {
+  const anchor = useComboboxAnchor()
   const { data } = useTypeList()
 
-  const types =
-    data?.results.filter((t) => !EXCLUDED_TYPES.includes(t.name)) ?? []
+  const [localSelected, setLocalSelected] = useState(selected)
 
-  function toggle(type: string) {
-    if (selected.includes(type)) {
-      setTypes(selected.filter((t) => t !== type))
-    } else {
-      setTypes([...selected, type])
-    }
-  }
+  // Sync local state when URL params change externally
+  const selectedKey = selected.join(",")
+  useEffect(() => {
+    setLocalSelected(selected)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedKey])
+
+  // Debounce the URL param update to avoid re-renders on every click
+  const debouncedSetTypes = useDebouncedCallback((types: string[]) => {
+    onSelectedChange(types)
+  }, 300)
+
+  const handleValueChange = useCallback(
+    (types: string[]) => {
+      setLocalSelected(types) // Immediate UI update
+      debouncedSetTypes(types) // Debounced URL update
+    },
+    [debouncedSetTypes]
+  )
+
+  const typeNames =
+    data?.results
+      .filter((t) => !EXCLUDED_TYPES.includes(t.name))
+      .map((t) => t.name) ?? []
 
   return (
-    <div className="flex flex-col gap-3">
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button variant="outline" className="w-full justify-start">
-            {selected.length > 0
-              ? `${selected.length} type${selected.length > 1 ? "s" : ""} selected`
-              : "Filter by type..."}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-52 p-0" align="start">
-          <Command>
-            <CommandInput placeholder="Search types..." />
-            <CommandList>
-              <CommandEmpty>No type found.</CommandEmpty>
-              <CommandGroup>
-                {types.map((type) => (
-                  <CommandItem
-                    key={type.name}
-                    value={type.name}
-                    data-checked={selected.includes(type.name)}
-                    onSelect={() => toggle(type.name)}
-                    className="capitalize"
-                  >
-                    {type.name}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
-
-      {selected.length > 0 && (
-        <div className="flex flex-wrap gap-1.5">
-          {selected.map((type) => (
-            <Badge
-              key={type}
-              variant="secondary"
-              className="cursor-pointer gap-1 capitalize"
-              onClick={() => toggle(type)}
-            >
-              {type}
-              <XIcon className="size-3" />
-            </Badge>
-          ))}
-          <button
-            onClick={() => setTypes([])}
-            className="text-xs text-muted-foreground hover:text-foreground"
-          >
-            Clear all
-          </button>
-        </div>
-      )}
-    </div>
+    <Combobox
+      multiple
+      autoHighlight
+      items={typeNames}
+      value={localSelected}
+      onValueChange={handleValueChange}
+      virtualized
+    >
+      <ComboboxChips ref={anchor} className="w-full">
+        <ComboboxValue>
+          {(values) => (
+            <Fragment>
+              {values.map((value: string) => (
+                <ComboboxChip key={value} className="capitalize">
+                  {value}
+                </ComboboxChip>
+              ))}
+              <ComboboxChipsInput placeholder="Filter by type..." />
+            </Fragment>
+          )}
+        </ComboboxValue>
+      </ComboboxChips>
+      <ComboboxContent anchor={anchor}>
+        <ComboboxEmpty>No type found.</ComboboxEmpty>
+        <ComboboxList>
+          {(item) => (
+            <ComboboxItem key={item} value={item} className="capitalize">
+              {item}
+            </ComboboxItem>
+          )}
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
   )
 }
