@@ -1,5 +1,5 @@
 import { getPokemonImageUrls } from "@/lib/utils"
-import type { NamedAPIResource } from "@/services/api"
+import type { NamedAPIResource } from "@/services/api/types/pokemon"
 
 function getPokemonId(url: string) {
   const segments = url.replace(/\/$/, "").split("/")

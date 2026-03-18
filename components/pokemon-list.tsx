@@ -1,5 +1,5 @@
 import { PokemonCard } from "@/components/pokemon-card"
-import type { NamedAPIResource } from "@/services/api"
+import type { NamedAPIResource } from "@/services/api/types/pokemon"
 
 interface PokemonListProps {
   pokemon: NamedAPIResource[]

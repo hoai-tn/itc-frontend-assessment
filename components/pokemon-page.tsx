@@ -4,15 +4,14 @@ import { PokemonList } from "@/components/pokemon-list"
 import { PokemonPagination } from "@/components/pokemon-pagination"
 import { PokemonTypeFilter } from "@/components/pokemon-type-filter"
 import { WithPokemonLoader } from "@/hocs/with-pokemon-loader"
-import { usePokemonList, usePokemonByType } from "@/hooks/use-pokemon-list"
+import { usePokemonList, usePokemonByType } from "@/hooks/use-pokemon"
 import { usePokemonParams } from "@/hooks/use-pokemon-params"
-import { useMemo } from "react"
 
 export function PokemonPage() {
   const { types, page, limit, offset, setTypes, setPage } = usePokemonParams()
   const isFiltering = types.length > 0
 
-  const listQuery = usePokemonList(offset, limit)
+  const listQuery = usePokemonList(offset, limit, { enabled: !isFiltering })
   const typeQuery = usePokemonByType(types)
 
   /**

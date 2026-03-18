@@ -1,7 +1,6 @@
 "use client"
 
-import { Fragment, useCallback, useEffect, useState } from "react"
-import { useDebouncedCallback } from "use-debounce"
+import { Fragment } from "react"
 import {
   Combobox,
   ComboboxChip,
@@ -16,6 +15,7 @@ import {
 } from "@/components/ui/combobox"
 import { useTypeList } from "@/hooks/use-pokemon-types"
 
+// We exclude "unknown" and "shadow" types since they don't have any Pokemon associated with them.
 const EXCLUDED_TYPES = ["unknown", "shadow"]
 
 interface PokemonTypeFilterProps {
@@ -30,28 +30,6 @@ export function PokemonTypeFilter({
   const anchor = useComboboxAnchor()
   const { data } = useTypeList()
 
-  const [localSelected, setLocalSelected] = useState(selected)
-
-  // Sync local state when URL params change externally
-  const selectedKey = selected.join(",")
-  useEffect(() => {
-    setLocalSelected(selected)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedKey])
-
-  // Debounce the URL param update to avoid re-renders on every click
-  const debouncedSetTypes = useDebouncedCallback((types: string[]) => {
-    onSelectedChange(types)
-  }, 300)
-
-  const handleValueChange = useCallback(
-    (types: string[]) => {
-      setLocalSelected(types) // Immediate UI update
-      debouncedSetTypes(types) // Debounced URL update
-    },
-    [debouncedSetTypes]
-  )
-
   const typeNames =
     data?.results
       .filter((t) => !EXCLUDED_TYPES.includes(t.name))
@@ -62,8 +40,8 @@ export function PokemonTypeFilter({
       multiple
       autoHighlight
       items={typeNames}
-      value={localSelected}
-      onValueChange={handleValueChange}
+      value={selected}
+      onValueChange={onSelectedChange}
       virtualized
     >
       <ComboboxChips ref={anchor} className="w-full">
