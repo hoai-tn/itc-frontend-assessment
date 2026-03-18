@@ -69,7 +69,7 @@ describe("PokemonPage", () => {
     setupDefaultMocks()
     render(<PokemonPage />)
 
-    expect(screen.getByText("Pokédex")).toBeInTheDocument()
+    expect(screen.getByAltText("pokemon_logo")).toBeInTheDocument()
   })
 
   it("renders pokemon from the list query", () => {

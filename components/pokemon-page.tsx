@@ -6,6 +6,7 @@ import { PokemonTypeFilter } from "@/components/pokemon-type-filter"
 import { WithPokemonLoader } from "@/hocs/with-pokemon-loader"
 import { usePokemonList, usePokemonByType } from "@/hooks/use-pokemon"
 import { usePokemonParams } from "@/hooks/use-pokemon-params"
+import Image from "next/image"
 
 export function PokemonPage() {
   const { types, page, limit, offset, setTypes, setPage } = usePokemonParams()
@@ -44,9 +45,16 @@ export function PokemonPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl p-6">
-      <h1 className="mb-6 text-2xl font-bold">Pok&eacute;dex</h1>
-      <div className="mb-6">
+    <div className="mx-auto max-w-6xl py-4">
+      <Image
+        className="pl-4"
+        src="/pokemon_logo.svg"
+        width={150}
+        height={60}
+        alt="pokemon_logo"
+        unoptimized
+      />
+      <div className="my-6 px-5">
         <PokemonTypeFilter selected={types} onSelectedChange={setTypes} />
       </div>
       <WithPokemonLoader isLoading={typeQuery.isFetching}>

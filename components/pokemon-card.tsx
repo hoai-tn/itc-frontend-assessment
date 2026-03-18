@@ -1,5 +1,6 @@
 import { getPokemonImageUrls } from "@/lib/utils"
 import type { NamedAPIResource } from "@/services/api/types/pokemon"
+import Image from "next/image"
 
 function getPokemonId(url: string) {
   const segments = url.replace(/\/$/, "").split("/")
@@ -19,13 +20,14 @@ export function PokemonCard({ pokemon }: { pokemon: NamedAPIResource }) {
           </span>
           <span className="text-sm font-medium capitalize">{pokemon.name}</span>
         </div>
-        <img
+        <Image
           src={imageUrls[0]}
           alt={pokemon.name}
           width={96}
           height={96}
           className="h-24 w-24 object-contain drop-shadow-md transition-transform group-hover:scale-110"
           loading="lazy"
+          unoptimized
           onError={(e) => {
             const img = e.currentTarget
             const currentIndex = imageUrls.indexOf(img.src)

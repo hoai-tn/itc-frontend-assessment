@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import {
   dehydrate,
   HydrationBoundary,
@@ -30,7 +31,9 @@ export default async function Page({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <PokemonPage />
+      <Suspense>
+        <PokemonPage />
+      </Suspense>
     </HydrationBoundary>
   )
 }
