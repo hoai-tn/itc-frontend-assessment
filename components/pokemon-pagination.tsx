@@ -9,7 +9,11 @@ interface PokemonPaginationProps {
   onPageChange: (page: number) => void
 }
 
-export function PokemonPagination({ totalPages, page, onPageChange }: PokemonPaginationProps) {
+export function PokemonPagination({
+  totalPages,
+  page,
+  onPageChange,
+}: PokemonPaginationProps) {
   if (totalPages <= 1) return null
 
   return (

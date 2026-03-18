@@ -48,7 +48,7 @@ export function PokemonTypeFilter({
       >
         <ComboboxChips
           ref={anchor}
-          className="w-full min-h-11 gap-1.5 rounded-xl border-2 border-[#E8C800] bg-[#fff9b8] px-3 py-2 shadow-inner focus-within:border-[#FFCC01] focus-within:ring-2 focus-within:ring-[#FFCC01]/30"
+          className="min-h-11 w-full gap-1.5 rounded-xl border-2 border-[#E8C800] bg-[#fff9b8] px-3 py-2 shadow-inner focus-within:border-[#FFCC01] focus-within:ring-2 focus-within:ring-[#FFCC01]/30"
         >
           <ComboboxValue>
             {(values) => (
@@ -56,7 +56,7 @@ export function PokemonTypeFilter({
                 {values.map((value: string) => (
                   <ComboboxChip
                     key={value}
-                    className="h-7 gap-1.5 rounded-full bg-[#FFCC01] px-3 text-sm font-semibold capitalize text-[#3C5AA6] shadow-[0_1px_2px_rgba(0,0,0,0.1)] transition-colors hover:bg-[#FFD84D]"
+                    className="h-7 gap-1.5 rounded-full bg-[#FFCC01] px-3 text-sm font-semibold text-[#3C5AA6] capitalize shadow-[0_1px_2px_rgba(0,0,0,0.1)] transition-colors hover:bg-[#FFD84D]"
                   >
                     {value}
                   </ComboboxChip>
@@ -69,7 +69,10 @@ export function PokemonTypeFilter({
             )}
           </ComboboxValue>
         </ComboboxChips>
-        <ComboboxContent anchor={anchor} className="border-[#FFCC01]/40 bg-[#FFFDE7]">
+        <ComboboxContent
+          anchor={anchor}
+          className="border-[#FFCC01]/40 bg-[#FFFDE7]"
+        >
           <ComboboxEmpty>No type found.</ComboboxEmpty>
           <ComboboxList>
             {(item) => (

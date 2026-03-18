@@ -11,10 +11,29 @@ function Pokeball({ className }: { className?: string }) {
       className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <circle cx="10" cy="10" r="9" fill="#fff" stroke="#2B2B2B" strokeWidth="1.5" />
+      <circle
+        cx="10"
+        cy="10"
+        r="9"
+        fill="#fff"
+        stroke="#2B2B2B"
+        strokeWidth="1.5"
+      />
       <path d="M1 10 H19" stroke="#2B2B2B" strokeWidth="1.5" />
-      <path d="M1 10 A9 9 0 0 0 19 10" fill="#E74C3C" stroke="#2B2B2B" strokeWidth="1.5" />
-      <circle cx="10" cy="10" r="3.5" fill="#fff" stroke="#2B2B2B" strokeWidth="1.5" />
+      <path
+        d="M1 10 A9 9 0 0 0 19 10"
+        fill="#E74C3C"
+        stroke="#2B2B2B"
+        strokeWidth="1.5"
+      />
+      <circle
+        cx="10"
+        cy="10"
+        r="3.5"
+        fill="#fff"
+        stroke="#2B2B2B"
+        strokeWidth="1.5"
+      />
       <circle cx="10" cy="10" r="1.8" fill="#2B2B2B" />
     </svg>
   )
@@ -60,9 +79,7 @@ export function PikachuFrame({ children }: { children: React.ReactNode }) {
       <div className="pikachu-frame-stripe pikachu-frame-stripe-br" />
 
       {/* Inner content */}
-      <div className="pikachu-frame-inner">
-        {children}
-      </div>
+      <div className="pikachu-frame-inner">{children}</div>
     </div>
   )
 }

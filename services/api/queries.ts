@@ -1,5 +1,9 @@
 import { queryOptions } from "@tanstack/react-query"
-import { getPokemonList, getTypeList, getTypeDetail } from "@/services/api/pokemon"
+import {
+  getPokemonList,
+  getTypeList,
+  getTypeDetail,
+} from "@/services/api/pokemon"
 
 export const POKEMON_QUERIES = {
   list: (offset: number, limit: number) =>

@@ -34,7 +34,12 @@ function PointerSvg() {
           colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
-          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            result="shape"
+          />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -47,7 +52,11 @@ function PointerSvg() {
             type="matrix"
             values="0 0 0 0 0.780392 0 0 0 0 0.627451 0 0 0 0 0.0313726 0 0 0 1 0"
           />
-          <feBlend mode="normal" in2="shape" result="effect1_innerShadow_3_215" />
+          <feBlend
+            mode="normal"
+            in2="shape"
+            result="effect1_innerShadow_3_215"
+          />
         </filter>
       </defs>
     </svg>
@@ -89,7 +98,12 @@ function HoverSvg() {
           colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
-          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            result="shape"
+          />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -117,7 +131,9 @@ export function CustomCursor() {
     const onOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement
       if (
-        target.closest("a, button, [role='button'], input, select, textarea, label, [data-cursor='hover']")
+        target.closest(
+          "a, button, [role='button'], input, select, textarea, label, [data-cursor='hover']"
+        )
       ) {
         setHovered(true)
       }
@@ -125,7 +141,9 @@ export function CustomCursor() {
     const onOut = (e: MouseEvent) => {
       const target = e.target as HTMLElement
       if (
-        target.closest("a, button, [role='button'], input, select, textarea, label, [data-cursor='hover']")
+        target.closest(
+          "a, button, [role='button'], input, select, textarea, label, [data-cursor='hover']"
+        )
       ) {
         setHovered(false)
       }
@@ -140,10 +158,7 @@ export function CustomCursor() {
   }, [])
 
   return (
-    <div
-      style={{ left: `${x}px`, top: `${y}px` }}
-      className="custom-cursor"
-    >
+    <div style={{ left: `${x}px`, top: `${y}px` }} className="custom-cursor">
       {hovered ? <HoverSvg /> : <PointerSvg />}
     </div>
   )
