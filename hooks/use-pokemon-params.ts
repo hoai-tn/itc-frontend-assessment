@@ -1,11 +1,9 @@
 "use client"
-import { startTransition } from "react"
-import { useSearchParams, useRouter, usePathname } from "next/navigation"
+import { useSearchParams, usePathname } from "next/navigation"
 import { DEFAULT_LIMIT } from "@/lib/constants"
 
 export function usePokemonParams() {
   const searchParams = useSearchParams()
-  const router = useRouter()
   const pathname = usePathname()
 
   const types = searchParams.get("type")?.split(",").filter(Boolean) ?? []
@@ -21,9 +19,7 @@ export function usePokemonParams() {
       else params.set(key, value)
     }
     const qs = params.toString()
-    startTransition(() => {
-      router.replace(`${pathname}${qs ? `?${qs}` : ""}`)
-    })
+    window.history.replaceState(null, "", `${pathname}${qs ? `?${qs}` : ""}`)
   }
 
   function setTypes(newTypes: string[]) {
